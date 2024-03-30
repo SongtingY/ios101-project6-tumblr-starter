@@ -14,10 +14,31 @@ class ViewController: UIViewController, UITableViewDataSource {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        navigationController?.navigationBar.prefersLargeTitles = true
         tableView.dataSource = self
         fetchPosts()
+        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
 
+        if let selectedIndexPath = tableView.indexPathForSelectedRow {
+
+            tableView.deselectRow(at: selectedIndexPath, animated: animated)
+        }
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        guard let selectedIndexPath = tableView.indexPathForSelectedRow else { return }
+
+        let selectedPost = posts[selectedIndexPath.row]
+
+        guard let detailViewController = segue.destination as? DetailViewController else { return }
+
+        detailViewController.post = selectedPost
+        detailViewController.posts = posts
+        detailViewController.currentIndex = selectedIndexPath.row
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
