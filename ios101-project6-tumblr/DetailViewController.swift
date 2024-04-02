@@ -14,6 +14,8 @@ class DetailViewController: UIViewController {
     
     @IBOutlet weak var textView: UITextView!
     
+    @IBOutlet weak var summaryText: UILabel!
+    @IBOutlet weak var imageMainView: UIImageView!
     var post: Post!
     var posts: [Post]!
     var currentIndex: Int!
@@ -22,10 +24,14 @@ class DetailViewController: UIViewController {
         super.viewDidLoad()
         navigationItem.largeTitleDisplayMode = .never
         textView.text = post.caption.trimHTMLTags()
-        
+        summaryText.text = post.summary
         if let imagePath = post.photos.first?.originalSize.url {
             Nuke.loadImage(with: imagePath, into: imageView)
         }
+        if let imageMainPath = post.photos.first?.originalSize.url {
+            Nuke.loadImage(with: imageMainPath, into: imageMainView)
+        }
+        imageView.alpha = 0.7
         // Do any additional setup after loading the view.
         setupNextButton()
     }
@@ -49,9 +55,12 @@ class DetailViewController: UIViewController {
     
     func updateViewForPost(_ post: Post) {
         textView.text = post.caption.trimHTMLTags()
+        
+        
         if let imagePath = post.photos.first?.originalSize.url {
             Nuke.loadImage(with: imagePath, into: imageView)
         }
+        
     }
 
     /*
