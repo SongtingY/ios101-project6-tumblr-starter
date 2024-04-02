@@ -56,11 +56,15 @@ class DetailViewController: UIViewController {
     func updateViewForPost(_ post: Post) {
         textView.text = post.caption.trimHTMLTags()
         
+        summaryText.text = post.summary
         
         if let imagePath = post.photos.first?.originalSize.url {
             Nuke.loadImage(with: imagePath, into: imageView)
         }
-        
+        if let imageMainPath = post.photos.first?.originalSize.url {
+            Nuke.loadImage(with: imageMainPath, into: imageMainView)
+        }
+        imageView.alpha = 0.7
     }
 
     /*
